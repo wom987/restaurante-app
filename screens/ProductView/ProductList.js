@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import MariscoItem from './ProductItem';
+import ProductItem from './ProductItem';
 
-function MariscoList() {
+function ProductList() {
     return (
         <View style={style.item} >
-            <MariscoItem />
+            <ProductItem />
         </View>
     );
 }
 
-export default MariscoList;
+export default ProductList;
 
 const style = StyleSheet.create({
     item: {

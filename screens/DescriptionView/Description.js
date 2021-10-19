@@ -1,8 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-export default function Description() {
+
+export default function Description({ route }) {
+
+    const [total, setTotal] = useState(1)
+
+    const increase = () => {
+        setTotal(total + 1)
+    }
+
+    const decrease = () => {
+        if (total != 1) {
+            setTotal(total - 1)
+        }else{
+            setTotal(1)
+        }
+    }
+
+
+    const {
+        idProduct,
+        nameProduct,
+        imageUri,
+        priceProduct,
+        descriptionProduct
+    } = route.params;
+
     return (
         <ScrollView>
             <View style={{ height: window.height }}>
@@ -13,26 +38,24 @@ export default function Description() {
                         </TouchableOpacity>
                     </View>
                     <View style={style.cardImage}>
-                        <Image source={require('../../assets/products/pizza.png')} style={style.imageMain} />
+                        <Image source={JSON.parse(JSON.stringify(imageUri))} style={style.imageMain} />
                     </View>
-                    <Text style={style.productName}>Salad</Text>
+                    <Text style={style.productName}>{JSON.parse(JSON.stringify(nameProduct))}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={style.prices}>$ 10.25</Text>
+                        <Text style={style.prices}>{JSON.parse(JSON.stringify(priceProduct))}</Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity style={style.buttonStyle}>
+                            <TouchableOpacity style={[style.buttonStyle, { marginEnd: 15 }]} onPress={decrease}>
                                 <Image source={require('../../assets/minus.png')} style={{ height: 24, width: 24 }} />
                             </TouchableOpacity>
-                            <Text style={style.number}>  1  </Text>
-                            <TouchableOpacity style={[style.buttonStyle, { backgroundColor: '#FCC636' }]}>
+                            <Text style={style.number}>{total}</Text>
+                            <TouchableOpacity style={[style.buttonStyle, { backgroundColor: '#FCC636', marginStart: 15 }]} onPress={increase}>
                                 <Image source={require('../../assets/plus.png')} style={{ height: 24, width: 24 }} />
                             </TouchableOpacity>
                         </View>
                     </View>
 
                     <Text style={style.description}>
-                        There are many variation of passages
-                        of Lorem ipsum availabl, but the majority
-                        have suffered alteration in some form.
+                        {JSON.parse(JSON.stringify(descriptionProduct))}
                     </Text>
                     <View style={[style.detail, { flexDirection: 'row', justifyContent: 'space-evenly', marginBottom: 15, marginTop: 15 }]}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -102,7 +125,7 @@ const style = StyleSheet.create({
     number: {
         fontWeight: 'bold',
         fontSize: 20,
-        color: '#212121'
+        color: '#212121',
     },
     description: {
         marginTop: 15,

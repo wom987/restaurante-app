@@ -4,9 +4,24 @@ import styled from 'styled-components/native';
 import Icon_c from '../components/Icon_c';
 import Title_c from '../components/Title_c';
 import product from '../services/ProductService';
+import { useNavigation } from "@react-navigation/native";
 
 
 function ProductItem() {
+    let functions = [];
+    const navigation = useNavigation();
+
+    product.forEach(element => {
+        //idProduct: deberia ser el ID unico generado por firebase
+        functions.push(() => navigation.navigate("Description", {
+            idProduct: element.nombre,
+            nameProduct: element.nombre,
+            imageUri: element.imageUri,
+            priceProduct: element.precio,
+            descriptionProduct: element.description
+        }));
+    });
+
     let renderIcon = () => {
         let icon = [];
         for (let i = 0; i < 5; i++) {
@@ -15,20 +30,20 @@ function ProductItem() {
             );
         }
         return icon;
-    }
+    };
 
     let renderCard = () => {
+        let i = 0;
         let card = [];
-
         product.forEach(element => {
             card.push(
-                <ItemShadow>
-
+                <ItemShadow onTouchEnd={functions[i]}>
                     <View style={{ flexDirection: 'row', height: 110 }}>
                         <View style={{ flexDirection: 'column' }}>
 
                             <View style={style.icon}>
                                 {renderIcon()}
+                                <Text>{functions[i]}</Text>
                             </View>
                             <View style={style.item}>
                                 <Title_c name={element.nombre} />
@@ -47,17 +62,18 @@ function ProductItem() {
                     </View>
 
                 </ItemShadow>
-            )
+            );
+            i++;
         });
         return card;
-    }
+    };
+
 
     return (
         <>
             {renderCard()}
         </>
     )
-
 }
 
 export default ProductItem
