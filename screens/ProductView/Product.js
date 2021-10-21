@@ -12,7 +12,7 @@ function Product() {
     }
 
     return (
-        <View>
+        <View style={{ backgroundColor: '#fff' }}>
             <Headers url={require('./../../assets/main.png')} datas={data} />
             <Categories />
             <Products />

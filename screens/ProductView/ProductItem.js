@@ -43,7 +43,6 @@ function ProductItem() {
 
                             <View style={style.icon}>
                                 {renderIcon()}
-                                <Text>{functions[i]}</Text>
                             </View>
                             <View style={style.item}>
                                 <Title_c name={element.nombre} />

@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import { Dimensions } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
 
 export default function Description({ route }) {
+    const windowHeight = Dimensions.get('window').height;
+    const navigation = useNavigation();
 
     const [total, setTotal] = useState(1)
 
@@ -14,11 +17,10 @@ export default function Description({ route }) {
     const decrease = () => {
         if (total != 1) {
             setTotal(total - 1)
-        }else{
+        } else {
             setTotal(1)
         }
     }
-
 
     const {
         idProduct,
@@ -28,9 +30,11 @@ export default function Description({ route }) {
         descriptionProduct
     } = route.params;
 
+    let totalPay = parseFloat(JSON.parse(JSON.stringify(priceProduct.substring(1)))) * parseFloat(total);
+    
     return (
         <ScrollView>
-            <View style={{ height: window.height }}>
+            <View style={{ height: windowHeight, backgroundColor: '#ffff' }}>
                 <View style={{ padding: 20 }}>
                     <View style={{ flexDirection: 'row-reverse' }}>
                         <TouchableOpacity style={style.buttonStyle}>
@@ -69,7 +73,15 @@ export default function Description({ route }) {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={[style.add]}>
+                    <TouchableOpacity style={[style.add]} onPress={() =>
+                        navigation.push('Car', {
+                            idProduct: idProduct,
+                            nameProduct: nameProduct,
+                            priceProduct: totalPay,
+                            numberProduct: total,
+                            imageUri: imageUri
+                        })
+                    }>
                         <Text style={{ fontWeight: 'bold', fontSize: 22 }}> AGREGAR </Text>
                     </TouchableOpacity>
 

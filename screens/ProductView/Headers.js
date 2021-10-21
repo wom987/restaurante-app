@@ -21,7 +21,7 @@ const ItemShadow = styled.View`
     border:0px;
     margin:15px;
     border-radius:15px;
-    box-shadow:0 0 20px #ccc;
+    box-shadow:0 0 10px #ccc;
     background-color:#FFEDCE;
     width:window.width;
     height:170px;
