@@ -7,6 +7,7 @@ import React from 'react';
 import Description from './screens/DescriptionView/Description';
 import Product from './screens/ProductView/Product';
 import Car from './screens/CarView/Car';
+import Payment from './screens/PaymentView/Payment';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +15,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+
+
         <Stack.Screen
           name='Product'
           component={Product}
@@ -53,7 +56,22 @@ export default function App() {
             },
           }}
         />
-
+        <Stack.Screen
+          name='Payment'
+          component={Payment}
+          options={{
+            headerStyle: {
+              backgroundColor: '#ffff',
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: '#ffff'
+            },
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

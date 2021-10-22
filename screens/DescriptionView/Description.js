@@ -11,6 +11,7 @@ const db = DatabaseConnection.getConnection();
 
 export default function Description({ route }) {
 
+
     const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation();
 

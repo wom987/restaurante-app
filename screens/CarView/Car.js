@@ -152,7 +152,13 @@ function Car() {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={[style.pay]}>
+                    <TouchableOpacity style={[style.pay]} onPress={() => {
+                        navigation.navigate('Payment', {
+                            subtotal: calculatePaymentDetail().subtotal,
+                            iva: calculatePaymentDetail().iva,
+                            total: calculatePaymentDetail().total
+                        });
+                    }}>
                         <Text style={{ fontWeight: 'bold', fontSize: 22 }}> PAGAR </Text>
                     </TouchableOpacity>
 
