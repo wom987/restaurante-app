@@ -40,11 +40,41 @@ export default function Description({ route }) {
 
     const addProduct = () => {
         db.transaction(function (tx) {
+
             tx.executeSql(
-                'INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)',
-                [idfake, nameProduct, imageUri, totalPay, descriptionProduct, parseInt(total)],
+                'SELECT * FROM Products WHERE nameProduct=?',
+                [nameProduct],
                 (tx, results) => {
-                    navigation.navigate('Car')
+                    if (results.rows.length == 0) {
+                        tx.executeSql(
+                            'INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)',
+                            [idfake, nameProduct, imageUri, totalPay.toFixed(2), descriptionProduct, parseInt(total)],
+                            (tx, results) => {
+                                navigation.navigate('Car')
+                            }
+                        );
+                    } else {
+                        let quantity;
+                        let previousTotal;
+                        for (let i = 0; i < results.rows.length; ++i) {
+                            quantity = results.rows.item(i).quantityProduct
+                            previousTotal = results.rows.item(i).priceProduct
+                        }
+
+                        let totalPayAdditional = parseFloat(JSON.parse(JSON.stringify(priceProduct.substring(1)))) * parseFloat(total);
+                        let finaltotal = totalPayAdditional + previousTotal;
+                        let newQuantityTotal = quantity + total;
+
+                        tx.executeSql(
+                            'UPDATE Products SET priceProduct=?, quantityProduct=? WHERE nameProduct=?',
+                            [finaltotal, newQuantityTotal, nameProduct],
+                            (tx, results) => {
+                                navigation.navigate('Car')
+                            }
+                        );
+
+                    }
+
                 }
             );
         });
@@ -57,7 +87,7 @@ export default function Description({ route }) {
             <View style={{ height: windowHeight, backgroundColor: '#ffff' }}>
                 <View style={{ padding: 20 }}>
                     <View style={{ flexDirection: 'row-reverse' }}>
-                        <TouchableOpacity style={style.buttonStyle}>
+                        <TouchableOpacity style={style.buttonStyle} onPress={() => { navigation.navigate('Car') }}>
                             <Image source={require('../../assets/shopping.png')} style={{ height: 24, width: 24 }} />
                         </TouchableOpacity>
                     </View>

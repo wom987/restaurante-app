@@ -10,7 +10,6 @@ import Car from './screens/CarView/Car';
 
 const Stack = createStackNavigator();
 
-
 export default function App() {
   return (
     <NavigationContainer>
@@ -41,6 +40,7 @@ export default function App() {
           name='Car'
           component={Car}
           options={{
+            headerShown: false,
             headerStyle: {
               backgroundColor: '#ffff',
               elevation: 0,

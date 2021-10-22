@@ -5,6 +5,7 @@ import Title_c from './../components/Title_c';
 import { Dimensions } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 import { DatabaseConnection } from '../../assets/database/database-connection';
+import App from './../../App';
 
 const db = DatabaseConnection.getConnection();
 
@@ -15,16 +16,8 @@ function Car() {
 
     let [flatListItems, setFlatListItems] = useState([]);
 
-    const mounted = useRef(false);
-
-
     useEffect(() => {
         refresh();
-        mounted.current = true;
-
-        return () => {
-            mounted.current = false;
-        };
     }, []);
 
     const refresh = () => {
@@ -41,12 +34,6 @@ function Car() {
                 }
             );
         });
-    }
-
-    function isMounted() {
-        if (mounted) {
-            navigation.navigate('Product')
-        }
     }
 
     function calculatePaymentDetail() {
@@ -96,7 +83,7 @@ function Car() {
                                 <Title_c name={item.nameProduct} />
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                                <Text style={style.prices}>$ {item.priceProduct}</Text>
+                                <Text style={style.prices}>$ {(item.priceProduct).toFixed(2)}</Text>
                                 <Text style={style.stars}>x{item.quantityProduct}</Text>
                             </View>
                         </View>
@@ -124,7 +111,7 @@ function Car() {
                     renderItem={({ item }) => listItemView(item)}
                     style={{ backgroundColor: '#ffff', padding: 20 }}
                 />
-                <TouchableOpacity style={[style.add, { marginStart: 30, marginEnd: 30 }]} onPress={()=>{navigation.navigate('Product')}}>
+                <TouchableOpacity style={[style.add, { marginStart: 30, marginEnd: 30 }]} onPress={() => { navigation.navigate('Product') }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={require('../../assets/arrow-left.png')} style={{ height: 50, width: 50, marginRight: 15 }} />
                         <Text style={{ fontWeight: 'bold', fontSize: 22, color: '#2AB059' }}>Seguir comprando.</Text>
