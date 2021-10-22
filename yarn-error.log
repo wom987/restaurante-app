@@ -1,0 +1,65 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Anonymous\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js install
+
+PATH: 
+  C:\Users\Anonymous\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Anonymous\bin;C:\Python27;C:\Python27\Scripts;C:\Program Files (x86)\VMware\VMware Workstation\bin;C:\Program Files\AdoptOpenJDK\jdk-11.0.11.9-hotspot\bin;C:\Program Files\Microsoft MPI\Bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\Program Files\Git\cmd;C:\WINDOWS\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn;C:\Program Files\Microsoft SQL Server\140\Tools\Binn;C:\Program Files (x86)\Microsoft SQL Server\140\DTS\Binn;C:\Program Files\Microsoft SQL Server\140\DTS\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn;C:\Program Files (x86)\dotnet;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn;C:\Program Files\Azure Data Studio\bin;C:\wamp64\bin\php\php5.6.40;C:\ProgramData\ComposerSetup\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\nodejs;C:\Program Files\Java\jdk1.8.0_211\bin;C:\Program Files (x86)\NetSarang\Xshell 7;C:\Users\Anonymous\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2021.1.1\bin;C:\Users\Anonymous\AppData\Local\Microsoft\WindowsApps;C:\Users\Anonymous\.dotnet\tools;C:\Program Files\Azure Data Studio\bin;C:\Users\Anonymous\AppData\Roaming\Composer\vendor\bin;C:\Users\Anonymous\AppData\Roaming\npm;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.22.11
+
+Node version: 
+  16.5.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile 'C:\Users\Anonymous\AppData\Local\Yarn\Cache\v6\npm-isobject-3.0.1-4e431e92b11a9731636aa1f9c8d1ccbcfdab78df-integrity\node_modules\isobject\index.d.ts' -> 'C:\Users\Anonymous\Downloads\Proyecto\restaurante-app\node_modules\isobject\index.d.ts'
+
+npm manifest: 
+  {
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web",
+      "eject": "expo eject"
+    },
+    "dependencies": {
+      "@react-native-community/masked-view": "^0.1.10",
+      "@react-native-picker/picker": "^2.1.0",
+      "@react-navigation/native": "^5.9.8",
+      "@react-navigation/stack": "^5.14.9",
+      "autoprefixer": "^10.3.7",
+      "expo": "~42.0.1",
+      "expo-status-bar": "~1.0.4",
+      "firebase": "^8.0.0",
+      "moti": "^0.16.0",
+      "react": "16.13.1",
+      "react-dom": "16.13.1",
+      "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+      "react-native-elements": "^3.0.0-alpha.1",
+      "react-native-gesture-handler": "~1.7.0",
+      "react-native-reanimated": "~1.13.0",
+      "react-native-safe-area-context": "^3.3.2",
+      "react-native-screens": "~2.10.1",
+      "react-native-sqlite-2": "^3.4.1",
+      "react-native-sqlite-storage": "^6.0.1",
+      "react-native-vector-icons": "^8.1.0",
+      "react-native-web": "~0.13.12",
+      "styled-components": "^5.3.1",
+      "tailwind-react-native-classnames": "^1.5.1"
+    },
+    "devDependencies": {
+      "@babel/core": "^7.13.0",
+      "faker": "^5.5.3"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

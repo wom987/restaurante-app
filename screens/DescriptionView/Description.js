@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Dimensions } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
+import faker from 'faker'
+import { DatabaseConnection } from '../../assets/database/database-connection';
+
+const db = DatabaseConnection.getConnection();
+
 
 export default function Description({ route }) {
+
     const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation();
 
@@ -21,9 +27,9 @@ export default function Description({ route }) {
             setTotal(1)
         }
     }
+    let idfake = faker.random.uuid;
 
     const {
-        idProduct,
         nameProduct,
         imageUri,
         priceProduct,
@@ -31,7 +37,21 @@ export default function Description({ route }) {
     } = route.params;
 
     let totalPay = parseFloat(JSON.parse(JSON.stringify(priceProduct.substring(1)))) * parseFloat(total);
-    
+
+    const addProduct = () => {
+        db.transaction(function (tx) {
+            tx.executeSql(
+                'INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)',
+                [idfake, nameProduct, imageUri, totalPay, descriptionProduct, parseInt(total)],
+                (tx, results) => {
+                    navigation.navigate('Car')
+                }
+            );
+        });
+
+
+    };
+
     return (
         <ScrollView>
             <View style={{ height: windowHeight, backgroundColor: '#ffff' }}>
@@ -73,15 +93,7 @@ export default function Description({ route }) {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={[style.add]} onPress={() =>
-                        navigation.push('Car', {
-                            idProduct: idProduct,
-                            nameProduct: nameProduct,
-                            priceProduct: totalPay,
-                            numberProduct: total,
-                            imageUri: imageUri
-                        })
-                    }>
+                    <TouchableOpacity style={[style.add]} onPress={addProduct}>
                         <Text style={{ fontWeight: 'bold', fontSize: 22 }}> AGREGAR </Text>
                     </TouchableOpacity>
 

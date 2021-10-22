@@ -1,70 +1,130 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, FlatList } from 'react-native'
 import styled from 'styled-components/native';
 import Title_c from './../components/Title_c';
 import { Dimensions } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
+import { DatabaseConnection } from '../../assets/database/database-connection';
 
+const db = DatabaseConnection.getConnection();
 
-function Car({ route }) {
+function Car() {
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;
     const navigation = useNavigation();
 
-    const {
-        idProduct,
-        nameProduct,
-        priceProduct,
-        numberProduct,
-        imageUri,
-    } = route.params;
+    let [flatListItems, setFlatListItems] = useState([]);
 
-    const [card, setCars] = useState([]);
+    const mounted = useRef(false);
 
 
-    let renderCard = () => {
+    useEffect(() => {
+        refresh();
+        mounted.current = true;
 
-        const updatedCarsArray = [...card,
-        <ItemShadow>
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <Image source={JSON.parse(JSON.stringify(imageUri))} style={style.iconSize} />
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View style={{ flexDirection: 'column' }}>
-                        <View style={style.item}>
-                            <Title_c name={JSON.parse(JSON.stringify(nameProduct))} />
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                            <Text style={style.prices}>$ {JSON.parse(JSON.stringify(priceProduct))}</Text>
-                            <Text style={style.stars}>x{JSON.parse(JSON.stringify(numberProduct))}</Text>
-                        </View>
-                    </View>
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity>
-                            <Image source={require('../../assets/delete.png')} style={style.delete} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
+    const refresh = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                'SELECT * FROM Products',
+                [],
+                (tx, results) => {
+                    let temp = [];
+                    for (let i = 0; i < results.rows.length; ++i) {
+                        temp.push(results.rows.item(i));
+                    }
+                    setFlatListItems(temp);
+                }
+            );
+        });
+    }
 
-            </View>
-        </ItemShadow>
+    function isMounted() {
+        if (mounted) {
+            navigation.navigate('Product')
+        }
+    }
 
-        ];
-        setCars(updatedCarsArray);
-        return setCars;
+    function calculatePaymentDetail() {
+        let total = 0.00;
+        let subtotal = 0.00;
+        let iva = 0.00;
+
+        flatListItems.forEach(element => {
+            total += element.priceProduct;
+        })
+
+        subtotal = (total - (total * 0.13));
+        iva = (total * 0.13);
+
+        let data = {
+            subtotal: subtotal.toFixed(2),
+            iva: iva.toFixed(2),
+            total: total.toFixed(2)
+        }
+
+        return data;
+    }
+
+
+    function deleteUser(id) {
+        db.transaction((tx) => {
+            tx.executeSql(
+                'DELETE FROM  Products where product_id=?',
+                [id],
+                (tx, results) => {
+                    refresh()
+                }
+            );
+        });
     };
 
 
+    let listItemView = (item) => {
+        return (
+            <ItemShadow style={{ backgroundColor: '#ffff' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', backgroundColor: '#fff' }} key={item.product_id}>
+                    <Image source={item.imageUri} style={style.iconSize} />
 
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'column' }}>
+                            <View style={style.item}>
+                                <Title_c name={item.nameProduct} />
+                            </View>
+                            <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                                <Text style={style.prices}>$ {item.priceProduct}</Text>
+                                <Text style={style.stars}>x{item.quantityProduct}</Text>
+                            </View>
+                        </View>
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <TouchableOpacity onPress={() => { deleteUser(item.product_id) }}>
+                                <Image source={require('../../assets/delete.png')} style={style.delete} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                </View>
+            </ItemShadow>
+        );
+
+    };
 
     return (
         <View style={{ height: windowHeight, width: windowWidth, backgroundColor: '#ffff' }}>
             <Text style={style.category}>Tu Carrito</Text>
             <View style={[style.main]}>
 
-                {renderCard()}
-
-                <TouchableOpacity style={[style.add]}>
+                <FlatList
+                    data={flatListItems}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => listItemView(item)}
+                    style={{ backgroundColor: '#ffff', padding: 20 }}
+                />
+                <TouchableOpacity style={[style.add, { marginStart: 30, marginEnd: 30 }]} onPress={()=>{navigation.navigate('Product')}}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={require('../../assets/arrow-left.png')} style={{ height: 50, width: 50, marginRight: 15 }} />
                         <Text style={{ fontWeight: 'bold', fontSize: 22, color: '#2AB059' }}>Seguir comprando.</Text>
@@ -83,8 +143,8 @@ function Car({ route }) {
                         </View>
 
                         <View>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#646464' }}>$ 15.75</Text>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#646464' }}>$ 15.75</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#646464' }}>$ {calculatePaymentDetail().subtotal}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#646464' }}>$ {calculatePaymentDetail().iva}</Text>
                             <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#646464' }}>$ 0.00</Text>
 
                         </View>
@@ -101,7 +161,7 @@ function Car({ route }) {
                         </View>
 
                         <View>
-                            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#646464' }}>$ 100.45</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#646464' }}>$ {calculatePaymentDetail().total}</Text>
                         </View>
                     </View>
 
@@ -146,7 +206,7 @@ const style = StyleSheet.create({
         padding: 25
     },
     add: {
-        width: '98%',
+        width: '90%',
         height: 55,
         padding: 15,
         borderRadius: 20,
@@ -154,7 +214,8 @@ const style = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
-        marginBottom: 10
+        marginBottom: 10,
+
     },
     pay: {
         width: '100%',
@@ -172,7 +233,6 @@ const style = StyleSheet.create({
         marginRight: 10
     },
     main: {
-        margin: 20,
         backgroundColor: '#ffff',
         justifyContent: 'center',
         alignItems: 'center'
