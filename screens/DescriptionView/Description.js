@@ -1,9 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Dimensions } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import faker from 'faker'
+import { DatabaseConnection } from '../../assets/database/database-connection';
+
+const db = DatabaseConnection.getConnection();
 
 
 export default function Description({ route }) {
+
+
+    const windowHeight = Dimensions.get('window').height;
+    const navigation = useNavigation();
 
     const [total, setTotal] = useState(1)
 
@@ -14,26 +24,71 @@ export default function Description({ route }) {
     const decrease = () => {
         if (total != 1) {
             setTotal(total - 1)
-        }else{
+        } else {
             setTotal(1)
         }
     }
-
+    let idfake = faker.random.uuid;
 
     const {
-        idProduct,
         nameProduct,
         imageUri,
         priceProduct,
         descriptionProduct
     } = route.params;
 
+    let totalPay = parseFloat(JSON.parse(JSON.stringify(priceProduct.substring(1)))) * parseFloat(total);
+
+    const addProduct = () => {
+        db.transaction(function (tx) {
+
+            tx.executeSql(
+                'SELECT * FROM Products WHERE nameProduct=?',
+                [nameProduct],
+                (tx, results) => {
+                    if (results.rows.length == 0) {
+                        tx.executeSql(
+                            'INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)',
+                            [idfake, nameProduct, imageUri, totalPay.toFixed(2), descriptionProduct, parseInt(total)],
+                            (tx, results) => {
+                                navigation.navigate('Car')
+                            }
+                        );
+                    } else {
+                        let quantity;
+                        let previousTotal;
+                        for (let i = 0; i < results.rows.length; ++i) {
+                            quantity = results.rows.item(i).quantityProduct
+                            previousTotal = results.rows.item(i).priceProduct
+                        }
+
+                        let totalPayAdditional = parseFloat(JSON.parse(JSON.stringify(priceProduct.substring(1)))) * parseFloat(total);
+                        let finaltotal = totalPayAdditional + previousTotal;
+                        let newQuantityTotal = quantity + total;
+
+                        tx.executeSql(
+                            'UPDATE Products SET priceProduct=?, quantityProduct=? WHERE nameProduct=?',
+                            [finaltotal, newQuantityTotal, nameProduct],
+                            (tx, results) => {
+                                navigation.navigate('Car')
+                            }
+                        );
+
+                    }
+
+                }
+            );
+        });
+
+
+    };
+
     return (
         <ScrollView>
-            <View style={{ height: window.height }}>
+            <View style={{ height: windowHeight, backgroundColor: '#ffff' }}>
                 <View style={{ padding: 20 }}>
                     <View style={{ flexDirection: 'row-reverse' }}>
-                        <TouchableOpacity style={style.buttonStyle}>
+                        <TouchableOpacity style={style.buttonStyle} onPress={() => { navigation.navigate('Car') }}>
                             <Image source={require('../../assets/shopping.png')} style={{ height: 24, width: 24 }} />
                         </TouchableOpacity>
                     </View>
@@ -69,7 +124,7 @@ export default function Description({ route }) {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={[style.add]}>
+                    <TouchableOpacity style={[style.add]} onPress={addProduct}>
                         <Text style={{ fontWeight: 'bold', fontSize: 22 }}> AGREGAR </Text>
                     </TouchableOpacity>
 
