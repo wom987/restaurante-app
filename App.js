@@ -1,21 +1,31 @@
-import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import React from 'react';
+import React from "react";
 
-import Description from './screens/DescriptionView/Description';
-import Product from './screens/ProductView/Product';
-
+import Description from "./screens/DescriptionView/Description";
+import Product from "./screens/ProductView/Product";
+import Home from "./screens/Home";
+import Pedidos from "./screens/pedidos/Pedidos";
 const Stack = createStackNavigator();
-
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name='Product'
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Pedidos"
+          component={Pedidos}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Product"
           component={Product}
           options={{ headerShown: false }}
         />
@@ -24,15 +34,15 @@ export default function App() {
           component={Description}
           options={{
             headerStyle: {
-              backgroundColor: '#F2F2F2',
+              backgroundColor: "#F2F2F2",
               elevation: 0,
               shadowOpacity: 0,
               borderBottomWidth: 0,
             },
             headerTransparent: true,
             headerTitleStyle: {
-              fontWeight: 'bold',
-              color: '#F2F2F2'
+              fontWeight: "bold",
+              color: "#F2F2F2",
             },
           }}
         />
