@@ -12,7 +12,7 @@ import Title_c from "../components/Title_c";
 import product from "../services/ProductService";
 import { useNavigation } from "@react-navigation/native";
 
-function ProductItem() {
+function ProductItem(props) {
   let functions = [];
   const navigation = useNavigation();
 
