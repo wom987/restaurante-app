@@ -1,19 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Headers from "./Headers";
 import { View } from "react-native";
 import Products from "./../ProductView/ProductList";
 import { DatabaseConnection } from "../../assets/database/database-connection";
-import Db from "../../database/Db";
-import { collection, getDocs } from "firebase/firestore";
+import firebase from "../../database/Db";
 const db = DatabaseConnection.getConnection();
 
 function Product() {
-  useEffect(() => {
-    const getProducts = async () => {
-      return (productList = await getDocs(collection(Db, "Products")));
-    };
+  const [productList, setProductList] = useState();
 
-    console.log(getProducts());
+  useEffect(() => {
+    firebase.db.collection("Products").onSnapshot((querySnapshot) => {
+      console.log(querySnapshot);
+      const items = [];
+      querySnapshot.docs.forEach((doc) => {
+        const { image, name, description, price, comment } = doc.data();
+        items.push({
+          id: doc.id,
+          image,
+          price,
+          description,
+          name,
+          comment,
+        });
+      });
+      setProductList(items);
+    });
 
     db.transaction(function (txn) {
       txn.executeSql(
