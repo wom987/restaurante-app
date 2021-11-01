@@ -9,21 +9,21 @@ import {
 import styled from "styled-components/native";
 import Icon_c from "../components/Icon_c";
 import Title_c from "../components/Title_c";
-import product from "../services/ProductService";
 import { useNavigation } from "@react-navigation/native";
 
 function ProductItem(props) {
   let functions = [];
   const navigation = useNavigation();
+  let product = props.data;
 
   product.forEach((element) => {
     //idProduct: deberia ser el ID unico generado por firebase
     functions.push(() =>
       navigation.navigate("Description", {
-        idProduct: element.nombre,
-        nameProduct: element.nombre,
-        imageUri: element.imageUri,
-        priceProduct: element.precio,
+        idProduct: element.id,
+        nameProduct: element.name,
+        imageUri: element.image,
+        priceProduct: element.price,
         descriptionProduct: element.description,
       })
     );
@@ -51,17 +51,20 @@ function ProductItem(props) {
                   <Text>{functions[i]}</Text>
                 </View>
                 <View style={style.item}>
-                  <Title_c name={element.nombre} />
+                  <Title_c name={element.name} />
                 </View>
 
-                <Text style={style.prices}>{element.precio}</Text>
+                <Text style={style.prices}>{element.price}</Text>
               </View>
-              <Image source={element.imageUri} style={style.iconSize}></Image>
+              <Image source={element.image} style={style.iconSize}></Image>
             </View>
             <View style={style.bottomCard}>
-              <Text style={style.stars}>{element.discount}</Text>
+              <Text style={style.stars}>En demanda.</Text>
               <View style={style.logo}>
-                <Image source={element.plusLogo} style={style.plusIcon}></Image>
+                <Image
+                  source={require("../../assets/plus.png")}
+                  style={style.plusIcon}
+                ></Image>
               </View>
             </View>
           </ItemShadow>

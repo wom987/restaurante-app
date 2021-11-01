@@ -7,11 +7,10 @@ import firebase from "../../database/Db";
 const db = DatabaseConnection.getConnection();
 
 function Product() {
-  const [productList, setProductList] = useState();
+  const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     firebase.db.collection("Products").onSnapshot((querySnapshot) => {
-      console.log(querySnapshot);
       const items = [];
       querySnapshot.docs.forEach((doc) => {
         const { image, name, description, price, comment } = doc.data();
