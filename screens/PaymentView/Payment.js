@@ -10,6 +10,7 @@ import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 import { DatabaseConnection } from "../../assets/database/database-connection";
+import firebase from "../../database/Db";
 
 const db = DatabaseConnection.getConnection();
 
@@ -18,16 +19,36 @@ function Payment({ route }) {
   const windowWidth = Dimensions.get("window").width;
   const navigation = useNavigation();
 
-  const [expiryDate, setExpiryDate] = useState({
-    value: "",
-  });
+  const red = "#ffc4c4";
+  const gray = "#f5f8f9";
+
+  const [expiryDate, setExpiryDate] = useState("");
+  const [validExpiryDate, setValidExpiryDate] = useState(true);
 
   const [card, setCard] = useState("");
+  const [validCard, setValidCard] = useState(true);
+
+  const [name, setName] = useState("");
+  const [validName, setValidName] = useState(true);
+
+  const [cvv, setCvv] = useState("");
+  const [validCvv, setValidCvv] = useState(true);
 
   const handleExpiryDate = (date) => {
-    setExpiryDate({
-      value: date,
-    });
+    setExpiryDate(date);
+  };
+
+  const handleCardChange = (value) => {
+    let formattedVal = value.replace(/\D/g, "");
+    setCard(formattedVal);
+  };
+
+  const handleNameChange = (value) => {
+    setName(value);
+  };
+
+  const handleCvvChange = (value) => {
+    setCvv(value);
   };
 
   function cleanCart() {
@@ -38,12 +59,81 @@ function Payment({ route }) {
     });
   }
 
-  const handleChange = (e) => {
-    const value = e.target.value.replace(/\D/g, "");
-    setCard(value);
+  const updateVal = () => {
+    if (expiryDate.length != 0) setValidExpiryDate(true);
+    else setValidExpiryDate(false);
+
+    if (card.length != 0) setValidCard(true);
+    else setValidCard(false);
+
+    if (name.length != 0) setValidName(true);
+    else setValidName(false);
+
+    if (cvv.length != 0) setValidCvv(true);
+    else setValidCvv(false);
   };
 
-  const { subtotal, iva, total } = route.params;
+  const submit = () => {
+    if (
+      expiryDate.length != 0 &&
+      card.length != 0 &&
+      name.length != 0 &&
+      cvv.length != 0
+    ) {
+      let lista = products.map((i) => {
+        return {
+          id: i.idPro,
+          description: i.descriptionProduct,
+          image: i.imageUri,
+          name: i.nameProduct,
+          price: i.priceProduct,
+          quantity: i.quantityProduct,
+        };
+      });
+
+      const now = new Date();
+      const offsetMs = now.getTimezoneOffset() * 60 * 1000;
+      const dateLocal = new Date(now.getTime() - offsetMs);
+      const str = dateLocal.toISOString().slice(0, 19);
+
+      let user = {
+        user: "guest",
+      };
+
+      let payment = {
+        name: name,
+        cardNumber: card,
+        expiryDate: expiryDate,
+        cvv: cvv,
+      };
+
+      let pedido = {
+        user: user,
+        dateTime: str,
+        products: lista,
+        payment: payment,
+      };
+
+      try {
+        firebase.db.collection("Orders").add(pedido);
+
+        cleanCart();
+
+        //test
+        firebase.db.collection("Orders").onSnapshot((querySnapshot) => {
+          querySnapshot.docs.forEach((doc) => {
+            console.log(doc.data());
+          });
+        });
+
+        navigation.navigate("Product");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const { subtotal, iva, total, products } = route.params;
 
   return (
     <View
@@ -122,9 +212,13 @@ function Payment({ route }) {
         <Text style={[style.labelText, { color: "#A4A4A4", marginTop: 10 }]}>
           Nombre del Titular
         </Text>
-        <ItemShadow>
+        <ItemShadow style={{ backgroundColor: validName ? gray : red }}>
           <TextInput
-            style={[style.textInput, { outlineStyle: "none" }]}
+            onChangeText={(value) => handleNameChange(value)}
+            style={[
+              style.textInput,
+              { outlineStyle: "none", backgroundColor: validName ? gray : red },
+            ]}
             placeholder="Mark Zuckerberg"
             placeholderTextColor="#CFD0CF"
           />
@@ -134,34 +228,48 @@ function Payment({ route }) {
         <Text style={[style.labelText, { color: "#A4A4A4", marginTop: 10 }]}>
           Número de Tarjeta
         </Text>
-        <ItemShadow>
+        <ItemShadow style={{ backgroundColor: validCard ? gray : red }}>
           <TextInput
-            style={[style.textInput, { outlineStyle: "none" }]}
+            style={[
+              style.textInput,
+              { outlineStyle: "none", backgroundColor: validCard ? gray : red },
+            ]}
             maxLength={16}
             value={card}
-            onChange={handleChange}
+            onChangeText={(value) => handleCardChange(value)}
             placeholder="####-####-####-####"
             placeholderTextColor="#CFD0CF"
           />
         </ItemShadow>
       </View>
       <View style={{ flexDirection: "row" }}>
-        <View>
+        <View style={{ marginStart: 15 }}>
           <Text
             style={[
               style.labelText,
-              { color: "#A4A4A4", marginTop: 5, marginBottom: 10 },
+              { color: "#A4A4A4", marginTop: 5, marginBottom: 2 },
             ]}
           >
             Expiración
           </Text>
-          <View style={{ width: "120 px", marginStart: 5 }}>
+          <ItemShadow style={{ backgroundColor: validExpiryDate ? gray : red }}>
             <TextInput
+              style={[
+                style.textInput,
+                {
+                  outlineStyle: "none",
+                  width: 100,
+                  backgroundColor: validExpiryDate ? gray : red,
+                },
+              ]}
+              maxLength={4}
+              onChangeText={(value) => handleExpiryDate(value)}
               placeholder="MM-YY"
-              onChange={(date) => handleExpiryDate(date)}
+              placeholderTextColor="#CFD0CF"
             />
-          </View>
+          </ItemShadow>
         </View>
+
         <View style={{ marginStart: 15 }}>
           <Text
             style={[
@@ -171,10 +279,18 @@ function Payment({ route }) {
           >
             CVV
           </Text>
-          <ItemShadow>
+          <ItemShadow style={{ backgroundColor: validCvv ? gray : red }}>
             <TextInput
-              style={[style.textInput, { outlineStyle: "none", width: 100 }]}
+              style={[
+                style.textInput,
+                {
+                  outlineStyle: "none",
+                  width: 100,
+                  backgroundColor: validCvv ? gray : red,
+                },
+              ]}
               maxLength={4}
+              onChangeText={(value) => handleCvvChange(value)}
               placeholder="123"
               placeholderTextColor="#CFD0CF"
             />
@@ -188,7 +304,13 @@ function Payment({ route }) {
           justifyContent: "space-between",
         }}
       >
-        <TouchableOpacity style={[style.add]}>
+        <TouchableOpacity
+          style={[style.add]}
+          onPress={() => {
+            updateVal();
+            submit();
+          }}
+        >
           <Text style={{ fontWeight: "bold", fontSize: 22 }}> Confirmar </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -213,7 +335,6 @@ const ItemShadow = styled.View`
   margin: 8px;
   border-radius: 10px;
   box-shadow: 0 0 0px #ccc;
-  background-color: #f5f8f9;
 `;
 
 const ItemShadowPrice = styled.View`
