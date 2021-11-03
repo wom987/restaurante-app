@@ -7,18 +7,46 @@ import {
   TouchableHighlight,
 } from "react-native";
 import styled from "styled-components/native";
-import Icon_c from "../components/Icon_c";
-import Title_c from "../components/Title_c";
-import product from "../services/ProductService";
 import { useNavigation } from "@react-navigation/native";
+import { DatabaseConnection } from "../../assets/database/database-connection";
 
 export default function Item(props) {
-  const detalles = (idPedido) => {};
-  const submitAgain = (pedido) => {};
-  const currency = "$ ";
-  console.log("props: ");
-  console.log(props);
+  const db = DatabaseConnection.getConnection();
+  const navigation = useNavigation();
+  const productsArray = props.pedido.products;
+  const submitAgain = () => {
+    cleanCart();
+    productsArray.forEach((i) => {
+      addProduct(i);
+    });
 
+    navigation.navigate("Car");
+  };
+
+  const addProduct = (product) => {
+    db.transaction(function (tx) {
+      tx.executeSql(
+        "INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)",
+        [
+          product.id,
+          product.name,
+          product.image,
+          product.price * product.quantity,
+          product.description,
+          product.quantity,
+        ],
+        () => {}
+      );
+    });
+  };
+
+  function cleanCart() {
+    db.transaction((tx) => {
+      tx.executeSql("DELETE FROM  Products", [], () => {});
+    });
+  }
+
+  const currency = "$ ";
   return (
     <TouchableHighlight onPress={() => {}} underlayColor="white">
       <ItemShadow>
@@ -26,17 +54,8 @@ export default function Item(props) {
         <View style={style.item}>
           <Text style={style.prices}>{currency + props.pedido.precio}</Text>
           <TouchableHighlight
-            style={style.details}
             onPress={() => {
-              detalles(props.pedido.detalles);
-            }}
-            underlayColor="white"
-          >
-            <Text>...</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            onPress={() => {
-              submitAgain(props.pedido);
+              submitAgain();
             }}
             underlayColor="white"
           >
@@ -78,15 +97,6 @@ const style = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 15,
     paddingHorizontal: 10,
-  },
-  details: {
-    marginHorizontal: 10,
-    width: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 50 / 2,
-    backgroundColor: "green",
   },
   date: {
     color: "#212121",

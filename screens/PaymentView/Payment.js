@@ -34,6 +34,7 @@ function Payment({ route }) {
   const [cvv, setCvv] = useState("");
   const [validCvv, setValidCvv] = useState(true);
 
+  const { subtotal, iva, total, products } = route.params;
   const handleExpiryDate = (date) => {
     setExpiryDate(date);
   };
@@ -101,6 +102,7 @@ function Payment({ route }) {
       };
 
       let payment = {
+        total: total,
         name: name,
         cardNumber: card,
         expiryDate: expiryDate,
@@ -116,24 +118,13 @@ function Payment({ route }) {
 
       try {
         firebase.db.collection("Orders").add(pedido);
-
         cleanCart();
-
-        //test
-        firebase.db.collection("Orders").onSnapshot((querySnapshot) => {
-          querySnapshot.docs.forEach((doc) => {
-            console.log(doc.data());
-          });
-        });
-
         navigation.navigate("Product");
       } catch (error) {
         console.log(error);
       }
     }
   };
-
-  const { subtotal, iva, total, products } = route.params;
 
   return (
     <View

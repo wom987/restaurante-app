@@ -45,7 +45,7 @@ function Car() {
     let iva = 0.0;
 
     flatListItems.forEach((element) => {
-      total += element.priceProduct;
+      total += element.priceProduct * element.quantityProduct;
     });
 
     subtotal = total - total * 0.13;

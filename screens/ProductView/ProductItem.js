@@ -32,24 +32,27 @@ function ProductItem(props) {
   let renderIcon = () => {
     let icon = [];
     for (let i = 0; i < 5; i++) {
-      icon.push(<Icon_c />);
+      icon.push(<Icon_c key={Math.random() * 1000000} />);
     }
     return icon;
   };
+
+  let renderedIcon = renderIcon();
 
   let renderCard = () => {
     let i = 0;
     let card = [];
     product.forEach((element) => {
       card.push(
-        <TouchableHighlight onPress={functions[i]} underlayColor="white">
+        <TouchableHighlight
+          key={element.id}
+          onPress={functions[i]}
+          underlayColor="white"
+        >
           <ItemShadow>
             <View style={{ flexDirection: "row", height: 110 }}>
               <View style={{ flexDirection: "column" }}>
-                <View style={style.icon}>
-                  {renderIcon()}
-                  <Text>{functions[i]}</Text>
-                </View>
+                <View style={style.icon}>{renderedIcon}</View>
                 <View style={style.item}>
                   <Title_c name={element.name} />
                 </View>
