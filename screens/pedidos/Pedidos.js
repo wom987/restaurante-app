@@ -31,33 +31,29 @@ export default function Pedidos() {
   };
 
   return (
-    <View style={style.parent}>
-      <Title>
-        <Text style={style.text}>Pedidos recientes</Text>
-      </Title>
+    <View>
+      <Text style={style.text}>Pedidos recientes</Text>
+      <View style={style.parent}>
 
-      {pedidosList(pedidos)}
+        {pedidosList(pedidos)}
+      </View>
     </View>
   );
 }
-
-const Title = styled.View`
-  margin: 5px;
-  border-radius: 10px;
-  box-shadow: 0 0 18px #ccc;
-  background-color: #fafafa;
-  width: 95%;
-  padding: 20px 0px 20px 20px;
-`;
 
 const style = StyleSheet.create({
   text: {
     color: "#212121",
     fontWeight: "bold",
     fontSize: 20,
+    backgroundColor: '#fff',
+    marginStart: 20,
+    marginEnd: 20,
+    marginBottom:20
   },
   parent: {
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: '#fff'
   },
 });

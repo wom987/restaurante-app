@@ -9,7 +9,7 @@ export default function Headers(props) {
     return (
         <>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginStart: 20, marginEnd: 20, marginTop: 10 }}>
-                <TouchableOpacity style={styles.buttonStyle}>
+                <TouchableOpacity style={styles.buttonStyle} onPress={()=>{navigation.navigate('Home')}}>
                     <Image source={require('../../assets/menu.png')} style={{ height: 24, width: 24 }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.buttonStyle} onPress={() => { navigation.navigate('Car') }}>

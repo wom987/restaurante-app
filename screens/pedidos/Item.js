@@ -14,6 +14,7 @@ export default function Item(props) {
   const db = DatabaseConnection.getConnection();
   const navigation = useNavigation();
   const productsArray = props.pedido.products;
+
   const submitAgain = () => {
     cleanCart();
     productsArray.forEach((i) => {
@@ -68,11 +69,12 @@ export default function Item(props) {
 }
 
 const ItemShadow = styled.View`
-  margin: 5px;
+  margin: 10px;
   border-radius: 30px;
   box-shadow: 0 0 18px #ccc;
   background-color: #fafafa;
-  width: 95%;
+  width: 100%;
+  height:100px;
   padding: 20px 0px 20px 20px;
 `;
 
@@ -81,7 +83,7 @@ const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
+    width: "100%",
   },
   prices: {
     marginHorizontal: 10,

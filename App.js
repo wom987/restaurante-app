@@ -24,7 +24,18 @@ export default function App() {
         <Stack.Screen
           name="Pedidos"
           component={Pedidos}
-          options={{ headerShown: false }}
+          options={{
+            headerStyle: {
+              backgroundColor: "#ffff",
+              elevation: 0,
+              shadowOpacity: 0,
+              borderBottomWidth: 0,
+            },
+            headerTitleStyle: {
+              fontWeight: "bold",
+              color: "#ffff",
+            },
+          }}
         />
         <Stack.Screen
           name="Product"
