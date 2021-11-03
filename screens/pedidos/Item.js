@@ -14,6 +14,7 @@ export default function Item(props) {
   const db = DatabaseConnection.getConnection();
   const navigation = useNavigation();
   const productsArray = props.pedido.products;
+
   const submitAgain = () => {
     cleanCart();
     productsArray.forEach((i) => {
