@@ -3,9 +3,7 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { DatabaseConnection } from "../../assets/database/database-connection";
-
-const db = DatabaseConnection.getConnection();
+import db from "../../assets/database/database-connection";
 
 export default function Description({ route }) {
   const windowHeight = Dimensions.get("window").height;
@@ -29,8 +27,7 @@ export default function Description({ route }) {
     route.params;
 
   let totalPay =
-    parseFloat(JSON.parse(JSON.stringify(priceProduct.substring(1)))) *
-    parseFloat(total);
+    parseFloat(JSON.parse(JSON.stringify(priceProduct))) * parseFloat(total);
 
   const addProduct = () => {
     db.transaction(function (tx) {

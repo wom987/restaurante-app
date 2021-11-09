@@ -11,10 +11,7 @@ import styled from "styled-components/native";
 import Title_c from "./../components/Title_c";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { DatabaseConnection } from "../../assets/database/database-connection";
-import App from "./../../App";
-
-const db = DatabaseConnection.getConnection();
+import db from "../../assets/database/database-connection";
 
 function Car() {
   const windowWidth = Dimensions.get("window").width;

@@ -1,5 +1,9 @@
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from "expo-sqlite";
 
-export const DatabaseConnection = {
+const DatabaseConnection = {
   getConnection: () => SQLite.openDatabase("databasepro.db"),
 };
+
+const db = DatabaseConnection.getConnection();
+
+export default db;

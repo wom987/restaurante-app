@@ -1,24 +1,17 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableHighlight,
-} from "react-native";
+import { View, StyleSheet, Text, TouchableHighlight } from "react-native";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
-import { DatabaseConnection } from "../../assets/database/database-connection";
+import db from "../../assets/database/database-connection";
 
 export default function Item(props) {
-  const db = DatabaseConnection.getConnection();
   const navigation = useNavigation();
   const productsArray = props.pedido.products;
 
   const submitAgain = () => {
     cleanCart();
     productsArray.forEach((i) => {
-      addProduct(i);
+      addProduct2(i);
     });
 
     navigation.navigate("Car");
@@ -41,6 +34,31 @@ export default function Item(props) {
     });
   };
 
+  function addProduct2(product) {
+    db.transaction(function (tx) {
+      tx.executeSql(
+        "SELECT * FROM Products WHERE nameProduct=?",
+        [product.name],
+        (tx, results) => {
+          if (results.rows.length == 0) {
+            tx.executeSql(
+              "INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)",
+              [
+                product.id,
+                product.name,
+                product.image,
+                product.price * product.quantity,
+                product.description,
+                product.quantity,
+              ],
+              (tx, results) => {}
+            );
+          }
+        }
+      );
+    });
+  }
+
   function cleanCart() {
     db.transaction((tx) => {
       tx.executeSql("DELETE FROM  Products", [], () => {});
@@ -49,7 +67,11 @@ export default function Item(props) {
 
   const currency = "$ ";
   return (
-    <TouchableHighlight onPress={() => {}} underlayColor="white">
+    <TouchableHighlight
+      onPress={() => {}}
+      underlayColor="white"
+      style={{ width: "90%" }}
+    >
       <ItemShadow>
         <Text style={style.date}>{props.pedido.fecha}</Text>
         <View style={style.item}>
@@ -82,7 +104,6 @@ const style = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    width: "90%",
   },
   prices: {
     marginHorizontal: 10,

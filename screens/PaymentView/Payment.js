@@ -9,10 +9,8 @@ import {
 import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
-import { DatabaseConnection } from "../../assets/database/database-connection";
+import db from "../../assets/database/database-connection";
 import firebase from "../../database/Db";
-
-const db = DatabaseConnection.getConnection();
 
 function Payment({ route }) {
   const windowHeight = Dimensions.get("window").height;

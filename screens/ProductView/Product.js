@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import Headers from "./Headers";
 import { View } from "react-native";
 import Products from "./../ProductView/ProductList";
-import { DatabaseConnection } from "../../assets/database/database-connection";
+import db from "../../assets/database/database-connection";
 import firebase from "../../database/Db";
-const db = DatabaseConnection.getConnection();
 
 function Product() {
   const [productList, setProductList] = useState([]);
