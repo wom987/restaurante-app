@@ -7,6 +7,7 @@ import { emailValidator } from "./../helpers/emailValidator";
 import { nameValidator } from "./../helpers/nameValidator";
 import { passwordValidator } from "./../helpers/passwordValidator";
 import firebase from "./../../database/Db";
+import Backbutton from "../components/Backbutton";
 
 const RegisterScreen = ({ navigation }) => {
   const initalState = {
@@ -55,7 +56,7 @@ const RegisterScreen = ({ navigation }) => {
               handleChangeText("", "email");
               handleChangeText("", "password");
               handleChangeText("", "confirmPassword");
-              navigation.navigate("Home");
+              navigation.navigate("LoginSCreen");
             } catch (error) {
               console.log(error);
             }
@@ -85,6 +86,7 @@ const RegisterScreen = ({ navigation }) => {
   return (
     //local view
     <View style={Styles.content}>
+      <Backbutton goBack={navigation.goBack} />
       <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
         {/*image view*/}
         <Image

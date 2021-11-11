@@ -10,9 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const borderSize = 100;
 
-function Options() {
-  const navigation = useNavigation();
-
+const Home = ({ navigation }) => {
   return (
     <View style={style.container}>
       <Image
@@ -46,7 +44,7 @@ function Options() {
           }}
         >
           <TouchableHighlight
-            onPress={() => navigation.navigate("Pedidos")}
+            onPress={() => navigation.navigate("Pedidos",{userID})}
             underlayColor="white"
             style={style.touch}
           >
@@ -60,9 +58,9 @@ function Options() {
       </View>
     </View>
   );
-}
+};
 
-export default Options;
+export default Home;
 
 const style = StyleSheet.create({
   imageMain: {

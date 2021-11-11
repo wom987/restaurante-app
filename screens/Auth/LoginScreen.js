@@ -6,9 +6,16 @@ import Button from "./../components/Button";
 import { emailValidator } from "./../helpers/emailValidator";
 import { passwordValidator } from "./../helpers/passwordValidator";
 import firebase from "./../../database/Db";
-import { NavigationHelpersContext } from "@react-navigation/native";
+import Backbutton from "../components/Backbutton";
+//react redux imports
+import {useDispatch, useSelector} from 'react-redux';
 
 const LoginScreen = ({ navigation }) => {
+  //ref to store from redux
+  const userId = useSelector(state=>state);
+  //dispatch ref
+  const dispatch = useDispatch();
+
   const initalState = {
     name: "",
     email: "",
@@ -20,10 +27,8 @@ const LoginScreen = ({ navigation }) => {
   //login states
   const [state, setState] = useState(initalState);
   //error states
-  const [nError, setNError] = useState("");
   const [eError, setEError] = useState("");
   const [pError, setPError] = useState("");
-  const [cError, setCError] = useState("");
   const [vError, setVError] = useState("");
   const handleChangeText = (value, name) => {
     setState({ ...state, [name]: value });
@@ -42,6 +47,13 @@ const LoginScreen = ({ navigation }) => {
           handleChangeText("", "email");
           handleChangeText("", "password");
           navigation.navigate("Home");
+          //updated the state with the user id
+          dispatch({
+            type: "USER/SETID",
+            payload: {
+              userId: user.id,
+            },
+          });
           return;
         } else {
           setVError("Error en correo y/o contraseña");
@@ -68,6 +80,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     //local view
     <View style={Styles.content}>
+      <Backbutton goBack={navigation.goBack} />
       <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
         {/*image view*/}
         <Image

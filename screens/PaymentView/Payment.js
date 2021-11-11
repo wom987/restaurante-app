@@ -11,8 +11,12 @@ import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 import db from "../../assets/database/database-connection";
 import firebase from "../../database/Db";
+//redux import
+import { useDispatch, useSelector } from "react-redux";
 
 function Payment({ route }) {
+  //getting userID from redux
+  const userId = useSelector((state) => state);
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
   const navigation = useNavigation();
@@ -73,6 +77,7 @@ function Payment({ route }) {
   };
 
   const submit = () => {
+   // console.log(userId);
     if (
       expiryDate.length != 0 &&
       card.length != 0 &&
@@ -96,7 +101,7 @@ function Payment({ route }) {
       const str = dateLocal.toISOString().slice(0, 19);
 
       let user = {
-        user: "guest",
+        user: userId,
       };
 
       let payment = {

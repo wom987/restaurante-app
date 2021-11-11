@@ -14,11 +14,20 @@ import Pedidos from "./screens/pedidos/Pedidos";
 import LoginSCreen from "./screens/Auth/LoginScreen";
 import RegisterScreen from "./screens/Auth/RegisterScreen";
 import StartScreen from "./screens/StartScreen";
+//Redux imports
+import { createStore } from 'redux';
+import { Provider } from "react-redux";
+import reducer from "./src/reducers/reducer";
+//setting the state
+
+const store =createStore(reducer);
+
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
       <Stack.Navigator  initialRouteName="StartScreen">
         <Stack.Screen
           name="Home"
@@ -88,10 +97,12 @@ export default function App() {
         <Stack.Screen
           name="LoginSCreen"
           component={LoginSCreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="RegisterScreen"
           component={RegisterScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="StartScreen"
@@ -100,5 +111,6 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
