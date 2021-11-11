@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 const widthInputs = "100%";
+const primaryColor ="#560CCE";
 const Styles = StyleSheet.create({
   image: {
     width: 110,
@@ -8,7 +9,7 @@ const Styles = StyleSheet.create({
   },
   header: {
     fontSize: 21,
-    color: "#560CCE",
+    color: primaryColor,
     fontWeight: "bold",
     paddingVertical: 12,
   },
@@ -27,7 +28,7 @@ const Styles = StyleSheet.create({
     width: widthInputs,
     marginVertical: 10,
     paddingVertical: 10,
-    borderColor: "#560CCE",
+    borderColor: primaryColor,
     borderWidth: 1,
     borderRadius: 5,
   },
@@ -38,7 +39,7 @@ const Styles = StyleSheet.create({
   },
   textInput: {
     height: 40,
-    borderColor: "#7a42f4",
+    borderColor: primaryColor,
     borderWidth: 1,
     borderRadius: 5,
     width: widthInputs,
