@@ -10,12 +10,16 @@ import Car from "./screens/CarView/Car";
 import Payment from "./screens/PaymentView/Payment";
 import Home from "./screens/Home";
 import Pedidos from "./screens/pedidos/Pedidos";
+//auth screens
+import LoginSCreen from "./screens/Auth/LoginScreen";
+import RegisterScreen from "./screens/Auth/RegisterScreen";
+import StartScreen from "./screens/StartScreen";
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator  initialRouteName="StartScreen">
         <Stack.Screen
           name="Home"
           component={Home}
@@ -80,6 +84,19 @@ export default function App() {
               color: "#ffff",
             },
           }}
+        />
+        <Stack.Screen
+          name="LoginSCreen"
+          component={LoginSCreen}
+        />
+        <Stack.Screen
+          name="RegisterScreen"
+          component={RegisterScreen}
+        />
+        <Stack.Screen
+          name="StartScreen"
+          component={StartScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+const widthInputs = "100%";
 const Styles = StyleSheet.create({
   image: {
     width: 110,
@@ -23,7 +24,7 @@ const Styles = StyleSheet.create({
     marginBottom: 12,
   },
   buttonStyle: {
-    width: "100%",
+    width: widthInputs,
     marginVertical: 10,
     paddingVertical: 10,
     borderColor: "#560CCE",
@@ -40,14 +41,14 @@ const Styles = StyleSheet.create({
     borderColor: "#7a42f4",
     borderWidth: 1,
     borderRadius: 5,
-    width: "100%",
+    width: widthInputs,
     marginBottom: 12,
     paddingLeft: 10,
   },
   label: {
     fontSize: 15,
     lineHeight: 21,
-    marginBottom:5
+    marginBottom: 5,
   },
   error: {
     fontSize: 15,

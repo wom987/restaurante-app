@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { Text, View, Image } from "react-native";
 import Styles from "./Util";
-import Button from "./Components/Button";
+import Button from "./components/Button";
 
-export class StartScreen extends Component {
-  render() {
-    return (
-      <View style={Styles.content}>
+const StartScreen = ({ navigation }) => {
+  return (
+    <View style={Styles.content}>
+      <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
         <Image source={require("../assets/logo.png")} style={Styles.image} />
         <Text style={Styles.header}>Restaurante Sin nombre</Text>
         <Text style={Styles.paragraph}>Sera un gusto atenderle</Text>
         <Button
           mode="contained"
-          onPress={() => navigation.navigate("LoginScreen")}
+          onPress={() => navigation.navigate("LoginSCreen")}
           text="INICIAR SESSION"
         />
         <Button
@@ -21,8 +21,8 @@ export class StartScreen extends Component {
           text="REGISTRARSE"
         />
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 export default StartScreen;

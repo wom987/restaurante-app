@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image } from "react-native";
-import Input from "./Components/Input";
-import Styles from "./Util";
-import Button from "./Components/Button";
-import { emailValidator } from "./helpers/emailValidator";
-import { passwordValidator } from "./helpers/passwordValidator";
-import firebase from "./../database/Db";
+import Input from "./../components/Input";
+import Styles from "./../Util";
+import Button from "./../components/Button";
+import { emailValidator } from "./../helpers/emailValidator";
+import { passwordValidator } from "./../helpers/passwordValidator";
+import firebase from "./../../database/Db";
+import { NavigationHelpersContext } from "@react-navigation/native";
 
 const LoginScreen = ({ navigation }) => {
   const initalState = {
@@ -35,16 +36,17 @@ const LoginScreen = ({ navigation }) => {
       setEError(emailError);
       setPError(passwordError);
     } else {
-        for (let i = 0; i < users.length; i++) {
-            const user = users[i];
-            if (user.email == state.email && user.password ==state.password) {
-                setVError("Logeado!");
-                return;
-              } else {
-                setVError("Error en correo y/o contraseña");
-              }
+      for (let i = 0; i < users.length; i++) {
+        const user = users[i];
+        if (user.email == state.email && user.password == state.password) {
+          handleChangeText("", "email");
+          handleChangeText("", "password");
+          navigation.navigate("Home");
+          return;
+        } else {
+          setVError("Error en correo y/o contraseña");
         }
-      
+      }
     }
   };
   //load users data
@@ -52,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
     firebase.db.collection("users").onSnapshot((querySnapshot) => {
       const users = [];
       querySnapshot.docs.forEach((doc) => {
-        const { email, name,  password } = doc.data();
+        const { email, name, password } = doc.data();
         users.push({
           id: doc.id,
           name,
@@ -66,36 +68,38 @@ const LoginScreen = ({ navigation }) => {
   return (
     //local view
     <View style={Styles.content}>
-      {/*image view*/}
-      <Image
-        source={require("../assets/logo.png")}
-        style={[Styles.image, { marginBotton: 35 }]}
-      />
-      {/*//header */}
-      <Text style={Styles.header}>Restaurante Sin nombre</Text>
-      {/*//inputs and setiing the new this.state.*/}
-      <Input
-        title={"Email:"}
-        onTextChange={(value) => handleChangeText(value, "email")}
-        value={state.email}
-        error={eError}
-      />
-      <Input
-        title={"Contraseña:"}
-        onTextChange={(value) => handleChangeText(value, "password")}
-        value={state.password}
-        password={true}
-        error={pError}
-      />
-      <Text style={[Styles.error, { color: "red" }]}>{vError}</Text>
-      {/* Register now button */}
-      <Button
-        mode="contained"
-        onPress={() => {
-          login();
-        }}
-        text="INICIAR SESSION"
-      />
+      <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
+        {/*image view*/}
+        <Image
+          source={require("../../assets/logo.png")}
+          style={[Styles.image, { marginBotton: 35 }]}
+        />
+        {/*//header */}
+        <Text style={Styles.header}>Restaurante Sin nombre</Text>
+        {/*//inputs and setiing the new this.state.*/}
+        <Input
+          title={"Email:"}
+          onTextChange={(value) => handleChangeText(value, "email")}
+          value={state.email}
+          error={eError}
+        />
+        <Input
+          title={"Contraseña:"}
+          onTextChange={(value) => handleChangeText(value, "password")}
+          value={state.password}
+          password={true}
+          error={pError}
+        />
+        <Text style={[Styles.error, { color: "red" }]}>{vError}</Text>
+        {/* Register now button */}
+        <Button
+          mode="contained"
+          onPress={() => {
+            login();
+          }}
+          text="INICIAR SESSION"
+        />
+      </View>
     </View>
   );
 };

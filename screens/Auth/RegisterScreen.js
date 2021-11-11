@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image } from "react-native";
-import Input from "./Components/Input";
-import Styles from "./Util";
-import Button from "./Components/Button";
-import { emailValidator } from "./helpers/emailValidator";
-import { nameValidator } from "./helpers/nameValidator";
-import { passwordValidator } from "./helpers/passwordValidator";
-import firebase from "./../database/Db";
+import Input from "./../components/Input";
+import Styles from "./../Util";
+import Button from "./../components/Button";
+import { emailValidator } from "./../helpers/emailValidator";
+import { nameValidator } from "./../helpers/nameValidator";
+import { passwordValidator } from "./../helpers/passwordValidator";
+import firebase from "./../../database/Db";
 
 const RegisterScreen = ({ navigation }) => {
   const initalState = {
@@ -55,7 +55,7 @@ const RegisterScreen = ({ navigation }) => {
               handleChangeText("", "email");
               handleChangeText("", "password");
               handleChangeText("", "confirmPassword");
-              console.log("agregado");
+              navigation.navigate("Home");
             } catch (error) {
               console.log(error);
             }
@@ -85,50 +85,52 @@ const RegisterScreen = ({ navigation }) => {
   return (
     //local view
     <View style={Styles.content}>
-      {/*image view*/}
-      <Image
-        source={require("../assets/logo.png")}
-        style={[Styles.image, { marginBotton: 35 }]}
-      />
-      {/*//header */}
-      <Text style={Styles.header}>Restaurante Sin nombre</Text>
-      {/*//inputs and setiing the new this.state.*/}
-      <Input
-        title={"Nombre completo:"}
-        onTextChange={(value) => handleChangeText(value, "name")}
-        value={state.name}
-        error={nError}
-      />
-      <Input
-        title={"Email:"}
-        onTextChange={(value) => handleChangeText(value, "email")}
-        value={state.email}
-        error={eError}
-      />
-      <Input
-        title={"Contraseña:"}
-        onTextChange={(value) => handleChangeText(value, "password")}
-        value={state.password}
-        password={true}
-        error={pError}
-      />
-      <Input
-        title={"Repetir contraseña:"}
-        onTextChange={(value) => handleChangeText(value, "confirmPassword")}
-        value={state.confirmPassword}
-        password={true}
-        error={cError}
-      />
+      <View style={{ alignItems: "center", flex: 1, justifyContent: "center" }}>
+        {/*image view*/}
+        <Image
+          source={require("../../assets/logo.png")}
+          style={[Styles.image, { marginBotton: 35 }]}
+        />
+        {/*//header */}
+        <Text style={Styles.header}>Restaurante Sin nombre</Text>
+        {/*//inputs and setiing the new this.state.*/}
+        <Input
+          title={"Nombre completo:"}
+          onTextChange={(value) => handleChangeText(value, "name")}
+          value={state.name}
+          error={nError}
+        />
+        <Input
+          title={"Email:"}
+          onTextChange={(value) => handleChangeText(value, "email")}
+          value={state.email}
+          error={eError}
+        />
+        <Input
+          title={"Contraseña:"}
+          onTextChange={(value) => handleChangeText(value, "password")}
+          value={state.password}
+          password={true}
+          error={pError}
+        />
+        <Input
+          title={"Repetir contraseña:"}
+          onTextChange={(value) => handleChangeText(value, "confirmPassword")}
+          value={state.confirmPassword}
+          password={true}
+          error={cError}
+        />
 
-      <Text style={[Styles.error, { color: "red" }]}>{vError}</Text>
-      {/* Register now button */}
-      <Button
-        mode="contained"
-        onPress={() => {
-          register();
-        }}
-        text="REGISTRARSE"
-      />
+        <Text style={[Styles.error, { color: "red" }]}>{vError}</Text>
+        {/* Register now button */}
+        <Button
+          mode="contained"
+          onPress={() => {
+            register();
+          }}
+          text="REGISTRARSE"
+        />
+      </View>
     </View>
   );
 };
