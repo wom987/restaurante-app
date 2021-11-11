@@ -77,7 +77,6 @@ function Payment({ route }) {
   };
 
   const submit = () => {
-   // console.log(userId);
     if (
       expiryDate.length != 0 &&
       card.length != 0 &&
