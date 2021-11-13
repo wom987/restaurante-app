@@ -8,63 +8,6 @@ export default function Item(props) {
   const navigation = useNavigation();
   const productsArray = props.pedido.products;
 
-  const submitAgain = () => {
-    cleanCart();
-    productsArray.forEach((i) => {
-      addProduct2(i);
-    });
-
-    navigation.navigate("Car");
-  };
-
-  const addProduct = (product) => {
-    db.transaction(function (tx) {
-      tx.executeSql(
-        "INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)",
-        [
-          product.id,
-          product.name,
-          product.image,
-          product.price * product.quantity,
-          product.description,
-          product.quantity,
-        ],
-        () => {}
-      );
-    });
-  };
-
-  function addProduct2(product) {
-    db.transaction(function (tx) {
-      tx.executeSql(
-        "SELECT * FROM Products WHERE nameProduct=?",
-        [product.name],
-        (tx, results) => {
-          if (results.rows.length == 0) {
-            tx.executeSql(
-              "INSERT INTO Products (idPro, nameProduct, imageUri, priceProduct, descriptionProduct, quantityProduct) VALUES (?,?,?,?,?,?)",
-              [
-                product.id,
-                product.name,
-                product.image,
-                product.price * product.quantity,
-                product.description,
-                product.quantity,
-              ],
-              (tx, results) => {}
-            );
-          }
-        }
-      );
-    });
-  }
-
-  function cleanCart() {
-    db.transaction((tx) => {
-      tx.executeSql("DELETE FROM  Products", [], () => {});
-    });
-  }
-
   const currency = "$ ";
   return (
     <TouchableHighlight
@@ -76,14 +19,6 @@ export default function Item(props) {
         <Text style={style.date}>{props.pedido.fecha}</Text>
         <View style={style.item}>
           <Text style={style.prices}>{currency + props.pedido.precio}</Text>
-          <TouchableHighlight
-            onPress={() => {
-              submitAgain();
-            }}
-            underlayColor="white"
-          >
-            <Text style={style.again}>Otra vez!</Text>
-          </TouchableHighlight>
         </View>
       </ItemShadow>
     </TouchableHighlight>
@@ -110,15 +45,6 @@ const style = StyleSheet.create({
     color: "#F66E2F",
     fontSize: 23,
     fontWeight: "bold",
-  },
-  again: {
-    marginHorizontal: 10,
-    fontSize: 23,
-    fontWeight: "bold",
-    color: "white",
-    backgroundColor: "red",
-    borderRadius: 15,
-    paddingHorizontal: 10,
   },
   date: {
     color: "#212121",

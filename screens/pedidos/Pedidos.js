@@ -5,9 +5,10 @@ import firebase from "../../database/Db";
 import styled from "styled-components/native";
 import NavigationButtoms from "../components/NavigationButtoms";
 import db from "../../assets/database/database-connection";
-
+import { useSelector } from "react-redux";
 export default function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
+  const userId = useSelector((state) => state);
 
   useEffect(() => {
     let isMounted = true;
@@ -53,6 +54,8 @@ export default function Pedidos() {
     });
   };
 
+  console.log(pedidos);
+  console.log(userId);
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <NavigationButtoms />
