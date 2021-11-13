@@ -8,7 +8,7 @@ import db from "../../assets/database/database-connection";
 import { useSelector } from "react-redux";
 export default function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
-  const userId = useSelector((state) => state);
+  //const userId = useSelector((state) => state);
 
   useEffect(() => {
     let isMounted = true;
@@ -54,8 +54,8 @@ export default function Pedidos() {
     });
   };
 
-  console.log(pedidos);
-  console.log(userId);
+  //console.log(pedidos);
+  //console.log(userId);
   return (
     <View style={{ backgroundColor: "white", flex: 1 }}>
       <NavigationButtoms />
