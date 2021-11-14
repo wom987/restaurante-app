@@ -310,9 +310,8 @@ function Payment({ route }) {
             cleanCart();
           }}
         >
-          <Text style={{ fontWeight: "350", fontSize: 22, color: "#A4A4A4" }}>
-            {" "}
-            Cancelar
+          <Text style={{ fontWeight: "350", fontSize: 15, color: "#A4A4A4" }}>
+            Cancelar todo
           </Text>
         </TouchableOpacity>
       </View>
