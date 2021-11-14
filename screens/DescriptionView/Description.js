@@ -3,6 +3,9 @@ import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+//components
+import Controls from "../components/Controls";
+import FooterProduct from "../components/FooterProduct";
 import db from "../../assets/database/database-connection";
 
 export default function Description({ route }) {
@@ -114,68 +117,24 @@ export default function Description({ route }) {
                 alignItems: "center",
               }}
             >
-              <TouchableOpacity
-                style={[style.buttonStyle, { marginEnd: 15 }]}
-                onPress={decrease}
-              >
-                <Image
-                  source={require("../../assets/minus.png")}
-                  style={{ height: 24, width: 24 }}
-                />
-              </TouchableOpacity>
+              <Controls
+              control="less"
+              action={decrease}
+              image={require("../../assets/minus.png")}
+              />
               <Text style={style.number}>{total}</Text>
-              <TouchableOpacity
-                style={[
-                  style.buttonStyle,
-                  { backgroundColor: "#FCC636", marginStart: 15 },
-                ]}
-                onPress={increase}
-              >
-                <Image
-                  source={require("../../assets/plus.png")}
-                  style={{ height: 24, width: 24 }}
-                />
-              </TouchableOpacity>
+              <Controls
+              control="plus"
+              action={increase}
+              image={require("../../assets/plus.png")}
+              />
             </View>
           </View>
 
           <Text style={style.description}>
             {JSON.parse(JSON.stringify(descriptionProduct))}
           </Text>
-          <View
-            style={[
-              style.detail,
-              {
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                marginBottom: 15,
-                marginTop: 15,
-              },
-            ]}
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../assets/ic_star.png")}
-                style={{ height: 24, width: 24 }}
-              ></Image>
-              <Text style={{ fontWeight: "bold", color: "#212121" }}>
-                {" "}
-                5.0{" "}
-              </Text>
-            </View>
-            <Text>|</Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../../assets/clock.png")}
-                style={{ height: 24, width: 24 }}
-              ></Image>
-              <Text style={{ fontWeight: "bold", color: "#212121" }}>
-                {" "}
-                20 min{" "}
-              </Text>
-            </View>
-          </View>
-
+         <FooterProduct/>
           <TouchableOpacity style={[style.add]} onPress={addProduct}>
             <Text style={{ fontWeight: "bold", fontSize: 22 }}> AGREGAR </Text>
           </TouchableOpacity>
@@ -207,17 +166,6 @@ const style = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
   },
-  buttonStyle: {
-    width: 50,
-    height: 50,
-    padding: 5,
-    borderRadius: 15,
-    color: "#000",
-    fontWeight: "bold",
-    backgroundColor: "#FAFAFA",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   add: {
     width: "100%",
     height: 55,
@@ -237,11 +185,5 @@ const style = StyleSheet.create({
     fontSize: 17,
     color: "#979797",
   },
-  detail: {
-    marginTop: 10,
-    borderRadius: 10,
-    backgroundColor: "#FAFAFA",
-    padding: 15,
-    width: window.width,
-  },
+  
 });

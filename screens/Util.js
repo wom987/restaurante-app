@@ -71,13 +71,37 @@ const Styles = StyleSheet.create({
     width: borderSize * 0.8,
     height: borderSize * 0.8,
     borderRadius: (borderSize * 0.8) / 2,
-  },menuItemText:{
+  },
+  menuItemText: {
     color: "#000",
     fontWeight: "bold ",
     fontSize: 22,
     marginTop: 10,
     alignItems: "center",
     justifyContent: "center",
-  }
+  },
+  //decriptions Styles
+  btnControls: {
+    width: 50,
+    height: 50,
+    padding: 5,
+    borderRadius: 15,
+    color: "#000",
+    fontWeight: "bold",
+    backgroundColor: "#FAFAFA",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageControl: {
+    height: 24,
+    width: 24,
+  },
+  detailStyle: {
+    marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: "#FAFAFA",
+    padding: 15,
+    width: window.width,
+  },
 });
 export default Styles;
