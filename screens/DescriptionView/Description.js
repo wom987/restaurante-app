@@ -7,7 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 import Controls from "../components/Controls";
 import FooterProduct from "../components/FooterProduct";
 import db from "../../assets/database/database-connection";
-
 export default function Description({ route }) {
   const windowHeight = Dimensions.get("window").height;
   const navigation = useNavigation();
@@ -130,7 +129,6 @@ export default function Description({ route }) {
               />
             </View>
           </View>
-
           <Text style={style.description}>
             {JSON.parse(JSON.stringify(descriptionProduct))}
           </Text>
