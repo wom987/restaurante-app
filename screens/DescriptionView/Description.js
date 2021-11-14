@@ -42,7 +42,7 @@ export default function Description({ route }) {
                 idProduct,
                 nameProduct,
                 imageUri,
-                totalPay.toFixed(2),
+                priceProduct,
                 descriptionProduct,
                 parseInt(total),
               ],
@@ -67,7 +67,7 @@ export default function Description({ route }) {
 
             tx.executeSql(
               "UPDATE Products SET priceProduct=?, quantityProduct=? WHERE nameProduct=?",
-              [finaltotal, newQuantityTotal, nameProduct],
+              [priceProduct, newQuantityTotal, nameProduct],
               (tx, results) => {
                 navigation.navigate("Car");
               }

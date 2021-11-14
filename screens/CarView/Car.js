@@ -43,6 +43,7 @@ function Car() {
 
     flatListItems.forEach((element) => {
       total += element.priceProduct * element.quantityProduct;
+      console.log(total);
     });
 
     subtotal = total - total * 0.13;

@@ -106,7 +106,7 @@ export default function App() {
         />
         <Stack.Screen
           name="StartScreen"
-          component={StartScreen}
+          component={Home}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
