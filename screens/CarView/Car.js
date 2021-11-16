@@ -229,16 +229,22 @@ function Car() {
           <TouchableOpacity
             style={[style.pay]}
             onPress={() => {
-              navigation.navigate("Payment", {
-                subtotal: calculatePaymentDetail().subtotal,
-                iva: calculatePaymentDetail().iva,
-                total: calculatePaymentDetail().total,
-                products: flatListItems,
-              });
-            }}
+
+              if (calculatePaymentDetail().total != 0.00) {
+                navigation.navigate("Payment", {
+                  subtotal: calculatePaymentDetail().subtotal,
+                  iva: calculatePaymentDetail().iva,
+                  total: calculatePaymentDetail().total,
+                  products: flatListItems,
+                });
+              }
+            }
+            }
           >
             <Text style={{ fontWeight: "bold", fontSize: 22 }}> PAGAR </Text>
           </TouchableOpacity>
+
+
         </ItemShadowPrice>
       </View>
     </View>
